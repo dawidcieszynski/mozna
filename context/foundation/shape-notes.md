@@ -8,8 +8,8 @@ timeline_budget:
   hard_deadline: null
   after_hours_only: null
 checkpoint:
-  current_phase: 4
-  phases_completed: [1, 2, 3]
+  current_phase: 5
+  phases_completed: [1, 2, 3, 4]
   gray_areas_resolved:
     - topic: context_type
       decision: greenfield (override — repo has only workflow scaffold, no product code)
@@ -23,7 +23,11 @@ checkpoint:
       decision: login required; flat household membership — all members see the same data
     - topic: mvp first flow
       decision: child → identify med (barcode or popular list) → gate/dose → log; second caregiver sees history or wait-until; ~3 weeks after-hours; AI photo-scan deferred
-  frs_drafted: 0
+    - topic: FR-005 socrates
+      decision: gate/dose requires child weight and age; without them no allow/dose
+    - topic: FR-008 socrates
+      decision: MVP is shared in-app visibility only; push notifications deferred (non-goal for v1)
+  frs_drafted: 8
   quality_check_status: pending
 ---
 
@@ -58,6 +62,29 @@ Login required (account per caregiver). Access is scoped to a household: members
 ### Guardrails
 - The gate never returns allow when an interval or daily limit has not elapsed (false allow is a regression).
 - Health data (child identity, weight, allergies, administration history) does not leak outside the household; seeds, fixtures, and tests use synthetic data only.
+
+## Functional Requirements
+
+### Household & access
+- FR-001: Caregiver can log in and belong to a household. Priority: must-have
+- FR-002: Caregiver can add and select a child (patient) in the household. Priority: must-have
+
+### Medication identification
+- FR-003: Caregiver can identify a medication by barcode. Priority: must-have
+- FR-004: Caregiver can select a medication from a popular list. Priority: must-have
+
+### Gate, dose & log
+- FR-005: Caregiver can see the gate answer and dose for a selected child and medication. Priority: must-have
+- FR-006: Caregiver can record an administration. Priority: must-have
+- FR-007: Caregiver can view administration history in the household. Priority: must-have
+- FR-008: A second caregiver in the same household can see that a dose was given and/or when the next dose is allowed. Priority: must-have
+
+## User Stories
+
+### US-01: Night dose across two caregivers
+**Given** two caregivers belong to the same household and a child and seeded popular medications exist  
+**When** caregiver A selects the child, identifies a medication (barcode or list), sees the gate/dose, and records an administration  
+**Then** caregiver B, identifying the same medication for that child, sees that a dose was given and/or when the next dose is allowed
 
 ## Forward: tech-stack
 
