@@ -67,24 +67,32 @@ Login required (account per caregiver). Access is scoped to a household: members
 
 ### Household & access
 - FR-001: Caregiver can log in and belong to a household. Priority: must-have
-- FR-002: Caregiver can add and select a child (patient) in the household. Priority: must-have
+  > Socrates: Counter-argument considered: local-only account / household onboarding friction at night. Resolution: kept; shared household state requires login-scoped membership.
+- FR-002: Caregiver can add and select a child (patient) in the household, including weight and age needed for dosing. Priority: must-have
+  > Socrates: Counter-argument considered: hardcode one child / skip profile edit. Resolution: kept; weight and age are required inputs for the gate (see FR-005).
 
 ### Medication identification
 - FR-003: Caregiver can identify a medication by barcode. Priority: must-have
+  > Socrates: Counter-argument considered: list-only for v1 / empty barcode promise without EAN data. Resolution: kept as parallel path with FR-004; seeded mappings required for popular meds.
 - FR-004: Caregiver can select a medication from a popular list. Priority: must-have
+  > Socrates: Counter-argument considered: list useless without seeded rules / list maintenance cost. Resolution: kept; Secondary success criterion covers seed coverage for a typical night.
 
 ### Gate, dose & log
-- FR-005: Caregiver can see the gate answer and dose for a selected child and medication. Priority: must-have
+- FR-005: Caregiver can see the gate answer and dose for a selected child and medication. Without usable weight and age, the product must not return allow or a dose. Priority: must-have
+  > Socrates: Counter-argument considered: "dose without weight/age is dangerous." Resolution: kept and tightened — weight and age are mandatory inputs; otherwise block / no dose.
 - FR-006: Caregiver can record an administration. Priority: must-have
+  > Socrates: Counter-argument considered: history view without explicit log / edit-delete safety hole. Resolution: kept; recording the dose is the shared-state write; edit/delete policy left for later if needed.
 - FR-007: Caregiver can view administration history in the household. Priority: must-have
-- FR-008: A second caregiver in the same household can see that a dose was given and/or when the next dose is allowed. Priority: must-have
+  > Socrates: Counter-argument considered: last dose only / noisy full history at night. Resolution: kept; MVP can emphasize last dose while history remains available.
+- FR-008: A second caregiver in the same household can see in the app that a dose was given and/or when the next dose is allowed. Priority: must-have
+  > Socrates: Counter-argument considered: "push notification is required; view alone is not enough." Resolution: kept as in-app shared visibility for MVP; push notifications deferred (v1 non-goal).
 
 ## User Stories
 
 ### US-01: Night dose across two caregivers
-**Given** two caregivers belong to the same household and a child and seeded popular medications exist  
+**Given** two caregivers belong to the same household and a child (with weight and age) and seeded popular medications exist  
 **When** caregiver A selects the child, identifies a medication (barcode or list), sees the gate/dose, and records an administration  
-**Then** caregiver B, identifying the same medication for that child, sees that a dose was given and/or when the next dose is allowed
+**Then** caregiver B, identifying the same medication for that child, sees in the app that a dose was given and/or when the next dose is allowed
 
 ## Forward: tech-stack
 
