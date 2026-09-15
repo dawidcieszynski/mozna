@@ -33,7 +33,7 @@ checkpoint:
     - topic: FR-008 socrates
       decision: MVP is shared in-app visibility only; push notifications deferred (non-goal for v1)
   frs_drafted: 8
-  quality_check_status: pending
+  quality_check_status: accepted
 ---
 
 # Shape notes — Można?
@@ -121,6 +121,10 @@ In the product flow: after child and medication are chosen, before recording an 
 - Avoid: push notifications in v1 — shared in-app visibility is enough for the MVP proof (FR-008).
 - Avoid: offline-first sync and double-dose conflict resolution in v1 — online-first; offline is later architecture work.
 - Avoid: end-user authoring of ChPL dosing rules — safety rules come from a seeded catalog, not a caregiver-edited rule editor.
+
+## Quality cross-check
+
+All greenfield checks present: Access Control, Business Logic (one-sentence rule), project artifacts, timeline-cost acknowledgment (mvp_weeks: 3), Non-Goals. Status: accepted.
 
 ## Forward: tech-stack
 
