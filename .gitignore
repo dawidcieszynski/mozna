@@ -1,0 +1,12 @@
+# Materiały kursowe 10xDevs — płatne, instalowane przez `npx @przeprogramowani/10x-cli`.
+# Nie publikujemy ich w repo; kto ich potrzebuje, pobiera je własnym kontem.
+.claude/skills/
+.claude/prompts/
+
+# Sekrety — nigdy do repo.
+.env
+.env.*
+!.env.example
+
+# Blok regul kursu wyciety z CLAUDE.md (material platny).
+.claude/10x-course-rules.md
