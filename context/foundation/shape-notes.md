@@ -6,10 +6,15 @@ updated: 2026-09-15
 timeline_budget:
   mvp_weeks: 3
   hard_deadline: null
-  after_hours_only: null
+  after_hours_only: false
+product_type: web-app
+target_scale:
+  users: medium
+  qps: null
+  data_volume: null
 checkpoint:
-  current_phase: 5
-  phases_completed: [1, 2, 3, 4]
+  current_phase: 7
+  phases_completed: [1, 2, 3, 4, 5, 6]
   gray_areas_resolved:
     - topic: context_type
       decision: greenfield (override — repo has only workflow scaffold, no product code)
@@ -42,6 +47,8 @@ Seed (from project brief, verbatim intent):
 O 3:00 dziecko ma gorączkę. Ostatnią dawkę podał ktoś inny w domu — nie wiadomo kiedy i czego. Opiekun stoi przed decyzją „czy mogę podać teraz i ile" bez wspólnego stanu.
 
 Kalkulatorów dawkowania są setki; brakuje wspólnego logu domu. Różnicownik: mama, tata i babcia widzą to samo — historię podań i odpowiedź bramki w jednym miejscu.
+
+Scale note: at ~100× users the domain gate rule stays the same; pressure would be operational (performance, tenancy), not a change to allow/wait/block logic.
 
 ## User & Persona
 
@@ -93,6 +100,20 @@ Login required (account per caregiver). Access is scoped to a household: members
 **Given** two caregivers belong to the same household and a child (with weight and age) and seeded popular medications exist  
 **When** caregiver A selects the child, identifies a medication (barcode or list), sees the gate/dose, and records an administration  
 **Then** caregiver B, identifying the same medication for that child, sees in the app that a dose was given and/or when the next dose is allowed
+
+## Business Logic
+
+For a child and a medication, based on administration history and substance rules, the application answers allow / wait / block and computes a dose — or refuses when weight/age are missing.
+
+User-visible inputs: the child (weight, age), the identified medication/substance, household administration history, and “now”.  
+Output: `allow` | `wait` (with until-when) | `block` (with reasons), plus a display dose — or no dose / block when weight or age is missing.  
+In the product flow: after child and medication are chosen, before recording an administration; a second caregiver sees the same gate outcome on the next attempt.
+
+## Non-Functional Requirements
+
+- Gate response feels fast enough for night-time use (roughly under ~1s perceived wait after child + medication are selected).
+- Health data does not leave the household boundary; seeds, fixtures, and tests use synthetic data only.
+- Gate behavior is deterministic: the same inputs produce the same result (no model guessing on the critical path).
 
 ## Forward: tech-stack
 
