@@ -13,8 +13,8 @@ target_scale:
   qps: null
   data_volume: null
 checkpoint:
-  current_phase: 7
-  phases_completed: [1, 2, 3, 4, 5, 6]
+  current_phase: 8
+  phases_completed: [1, 2, 3, 4, 5, 6, 7]
   gray_areas_resolved:
     - topic: context_type
       decision: greenfield (override — repo has only workflow scaffold, no product code)
@@ -114,6 +114,13 @@ In the product flow: after child and medication are chosen, before recording an 
 - Gate response feels fast enough for night-time use (roughly under ~1s perceived wait after child + medication are selected).
 - Health data does not leave the household boundary; seeds, fixtures, and tests use synthetic data only.
 - Gate behavior is deterministic: the same inputs produce the same result (no model guessing on the critical path).
+
+## Non-Goals
+
+- Avoid: AI packaging photo-scan / leaflet OCR in v1 — medication ID is barcode and/or popular list only (keeps the critical path free of model extraction).
+- Avoid: push notifications in v1 — shared in-app visibility is enough for the MVP proof (FR-008).
+- Avoid: offline-first sync and double-dose conflict resolution in v1 — online-first; offline is later architecture work.
+- Avoid: end-user authoring of ChPL dosing rules — safety rules come from a seeded catalog, not a caregiver-edited rule editor.
 
 ## Forward: tech-stack
 
