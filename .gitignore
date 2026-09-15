@@ -10,3 +10,4 @@
 
 # Blok regul kursu wyciety z CLAUDE.md (material platny).
 .claude/10x-course-rules.md
+.claude/.10x-cli-manifest.json
