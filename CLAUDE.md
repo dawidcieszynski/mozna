@@ -125,6 +125,5 @@ server-rendered. Trasy API muszą eksportować `const prerender = false`.
 
 ## CI
 
-GitHub Actions (`.github/workflows/ci.yml`): lint + build na push i PR do
-`master`. Wymaga secretów repozytorium `SUPABASE_URL` i `SUPABASE_KEY` na kroku
-build.
+Bramka: `@.github/workflows/ci.yml` (lint, `astro check`, build + smoke;
+build wymaga secretów `SUPABASE_URL` / `SUPABASE_KEY`).
