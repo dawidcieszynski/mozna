@@ -69,3 +69,71 @@ po `get --type rules` potrafi dopisać marker; wtedy wytnij sekcję
 `<!-- BEGIN @przeprogramowani/10x-cli -->` … `<!-- END … -->`.
 
 @.claude/10x-course-rules.md
+
+## Komendy
+
+- `npm run dev` — serwer deweloperski (Cloudflare workerd)
+- `npm run build` — build produkcyjny (SSR przez `@astrojs/cloudflare`)
+- `npm run preview` — podgląd builda produkcyjnego
+- `npm run lint` — ESLint z regułami type-checked
+- `npm run lint:fix` — auto-fix lint
+- `npm run format` — Prettier (prettier-plugin-astro + prettier-plugin-tailwindcss)
+- `npm run smoke` — smoke test flow auth (`scripts/smoke.mjs`) wobec działającego
+  serwera; `BASE_URL` (domyślnie `http://localhost:4321`). Uruchamiaj po upgrade
+  zależności; CI odpala go przeciw preview z lokalnym Supabase.
+
+Pre-commit: husky + lint-staged — `eslint --fix` na `*.{ts,tsx,astro}`,
+`prettier --write` na `*.{json,css,md}`.
+
+## Architektura
+
+**Astro 7 SSR** + React 19 islands, Tailwind 4, Supabase auth, shadcn/ui.
+Deploy: Cloudflare Workers.
+
+### Rendering
+
+Pełny SSR (`output: "server"` w `astro.config.mjs`). Strony domyślnie
+server-rendered. Trasy API muszą eksportować `const prerender = false`.
+
+### Auth
+
+- `src/lib/supabase.ts` — klient Supabase SSR (`@supabase/ssr`, sesje w cookies).
+  `SUPABASE_URL` i `SUPABASE_KEY` przez `astro:env/server` (`env.schema` w
+  `astro.config.mjs`).
+- `src/middleware.ts` — na każdym requestcie ustawia `context.locals.user`;
+  przekierowuje niezalogowanych z tras w `PROTECTED_ROUTES`.
+- API: `src/pages/api/auth/{signin,signup,signout}.ts`
+- Strony: `src/pages/auth/{signin,signup,confirm-email}.astro`
+- Przykład chronionej strony: `src/pages/dashboard.astro`
+
+### Konwencje
+
+- Alias ścieżek: `@/*` → `./src/*` (tsconfig).
+- Komponenty Astro na treść/layout; React tylko przy interaktywności.
+- Tailwind: klasy łączyć przez `cn()` z `@/lib/utils` (clsx + tailwind-merge) —
+  bez ręcznej konkatenacji stringów.
+- shadcn/ui w `src/components/ui/`, wariant „new-york”. Nowe:
+  `npx shadcn@latest add [name]`.
+- Trasy API: eksporty `GET` / `POST` (uppercase); walidacja wejścia Zod.
+- Migracje Supabase: `supabase/migrations/`, format
+  `YYYYMMDDHHmmss_short_description.sql`. Zawsze RLS z granularnymi politykami
+  per operacja / per rola.
+- React: bez dyrektyw Next.js (`"use client"` itd.). Hooki w
+  `src/components/hooks/`.
+- Serwisy/helpers w `src/lib/` (lub `src/lib/services/` dla logiki biznesowej).
+- Współdzielone typy (encje, DTO) w `src/types.ts`.
+
+### Środowisko
+
+- Node.js v22.14.0 (zob. `.nvmrc`)
+- Env: `SUPABASE_URL`, `SUPABASE_KEY` — skopiuj `.env.example` → `.env` (Node)
+  albo `.dev.vars` (lokalny Cloudflare)
+- Lokalny Supabase: `npx supabase start` (wymaga Dockera)
+- Lokalny Cloudflare: sekrety w `.dev.vars` (gitignored)
+- Deploy: `npx wrangler deploy` (konto Cloudflare + auth `wrangler`)
+
+## CI
+
+GitHub Actions (`.github/workflows/ci.yml`): lint + build na push i PR do
+`master`. Wymaga secretów repozytorium `SUPABASE_URL` i `SUPABASE_KEY` na kroku
+build.
