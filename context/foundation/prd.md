@@ -11,7 +11,7 @@ target_scale:
   data_volume: null
 timeline_budget:
   mvp_weeks: 3
-  hard_deadline: null
+  hard_deadline: 2026-11-04
   after_hours_only: false
 ---
 

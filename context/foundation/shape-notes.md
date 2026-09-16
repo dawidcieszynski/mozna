@@ -5,7 +5,7 @@ created: 2026-09-15
 updated: 2026-09-15
 timeline_budget:
   mvp_weeks: 3
-  hard_deadline: null
+  hard_deadline: 2026-11-04
   after_hours_only: false
 product_type: web-app
 target_scale:
@@ -27,7 +27,7 @@ checkpoint:
     - topic: access model
       decision: login required; flat household membership — all members see the same data
     - topic: mvp first flow
-      decision: child → identify med (barcode or popular list) → gate/dose → log; second caregiver sees history or wait-until; ~3 weeks after-hours; AI photo-scan deferred
+      decision: child → identify med (barcode or popular list) → gate/dose → log; second caregiver sees history or wait-until; ~3 weeks, mixed schedule (part after-hours, part alongside day work, in parallel); AI photo-scan deferred
     - topic: FR-005 socrates
       decision: gate/dose requires child weight and age; without them no allow/dose
     - topic: FR-008 socrates
