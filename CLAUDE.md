@@ -116,12 +116,8 @@ server-rendered. Trasy API muszą eksportować `const prerender = false`.
 
 ### Środowisko
 
-- Node.js v22.14.0 (zob. `.nvmrc`)
-- Env: `SUPABASE_URL`, `SUPABASE_KEY` — skopiuj `.env.example` → `.env` (Node)
-  albo `.dev.vars` (lokalny Cloudflare)
-- Lokalny Supabase: `npx supabase start` (wymaga Dockera)
-- Lokalny Cloudflare: sekrety w `.dev.vars` (gitignored)
-- Deploy: `npx wrangler deploy` (konto Cloudflare + auth `wrangler`)
+Node/env/setup: `@.nvmrc`, `@.env.example`, `@README.md`. Skrót dla agentów:
+`@AGENTS.md` (Security & Configuration Tips).
 
 ## CI
 
