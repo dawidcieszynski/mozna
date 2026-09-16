@@ -72,18 +72,9 @@ po `get --type rules` potrafi dopisać marker; wtedy wytnij sekcję
 
 ## Komendy
 
-- `npm run dev` — serwer deweloperski (Cloudflare workerd)
-- `npm run build` — build produkcyjny (SSR przez `@astrojs/cloudflare`)
-- `npm run preview` — podgląd builda produkcyjnego
-- `npm run lint` — ESLint z regułami type-checked
-- `npm run lint:fix` — auto-fix lint
-- `npm run format` — Prettier (prettier-plugin-astro + prettier-plugin-tailwindcss)
-- `npm run smoke` — smoke test flow auth (`scripts/smoke.mjs`) wobec działającego
-  serwera; `BASE_URL` (domyślnie `http://localhost:4321`). Uruchamiaj po upgrade
-  zależności; CI odpala go przeciw preview z lokalnym Supabase.
-
-Pre-commit: husky + lint-staged — `eslint --fix` na `*.{ts,tsx,astro}`,
-`prettier --write` na `*.{json,css,md}`.
+Skrypty i lint-staged: `@package.json`. Po zmianach auth/zależności odpal
+`npm run smoke` wobec działającego serwera (`BASE_URL`, domyślnie
+`http://localhost:4321`).
 
 ## Architektura
 
