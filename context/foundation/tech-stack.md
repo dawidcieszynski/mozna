@@ -5,7 +5,7 @@ project_name: mozna
 hints:
   language_family: js
   team_size: solo
-  deployment_target: cloudflare-pages
+  deployment_target: cloudflare-workers
   ci_provider: github-actions
   ci_default_flow: auto-deploy-on-merge
   bootstrapper_confidence: first-class
@@ -21,4 +21,4 @@ hints:
 
 ## Why this stack
 
-Web-app MVP („Można?") with a 3-week timeline, medium household scale, and must-have login-scoped household membership. Auth + Postgres + edge deploy ship in the recommended JS default (Astro + React + TypeScript + Supabase + Cloudflare); that matches the night-time shared-log flow without adding payments, AI, realtime, or background jobs. Standard path accepted the vetted `(web, js)` pick; scaffolding confidence is first-class. Deploy to Cloudflare Pages; CI on GitHub Actions with auto-deploy on merge to main.
+Web-app MVP („Można?") with a 3-week timeline, medium household scale, and must-have login-scoped household membership. Auth + Postgres + edge deploy ship in the recommended JS default (Astro + React + TypeScript + Supabase + Cloudflare); that matches the night-time shared-log flow without adding payments, AI, realtime, or background jobs. Standard path accepted the vetted `(web, js)` pick; scaffolding confidence is first-class. Deploy to Cloudflare Workers; CI on GitHub Actions with auto-deploy on merge to main.
