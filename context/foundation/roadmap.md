@@ -41,7 +41,7 @@ O 3:00 dziecko ma gorączkę, a ostatnią dawkę podał ktoś inny w domu — ni
 
 | ID   | Change ID                     | Outcome (user can …)                                                                 | Prerequisites | PRD refs                    | Status   |
 | ---- | ----------------------------- | ------------------------------------------------------------------------------------ | ------------- | --------------------------- | -------- |
-| F-01 | seed-medication-catalog       | (foundation) katalog popularnych substancji z regułami dawkowania i źródłami ChPL jest w bazie | —             | FR-004, FR-005, Success Criteria (Secondary), NFR (deterministyczna bramka), Non-Goals (brak edytora reguł) | ready    |
+| F-01 | seed-medication-catalog       | (foundation) katalog popularnych substancji z regułami dawkowania i źródłami ChPL jest w bazie | —             | FR-004, FR-005, Success Criteria (Secondary), NFR (deterministyczna bramka), Non-Goals (brak edytora reguł) | in-progress |
 | S-01 | household-with-child          | opiekun zakłada gospodarstwo i dodaje dziecko z wagą i wiekiem, a potem je wybiera   | —             | FR-001, FR-002, Access Control | done |
 | S-02 | gate-from-popular-list        | opiekun wybiera dziecko i lek z listy i widzi allow / wait / block oraz dawkę        | S-01, F-01    | FR-004, FR-005, US-01, NFR (odpowiedź poniżej ~1 s, deterministyczna bramka), Guardrails (brak fałszywego allow) | proposed |
 | S-03 | record-administration         | opiekun zapisuje podanie i widzi historię podań gospodarstwa; bramka ją uwzględnia   | S-02          | FR-006, FR-007, US-01       | proposed |
@@ -84,7 +84,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Unknowns:**
   - Wartość odstępu przy naprzemiennym podawaniu paracetamolu i ibuprofenu (decyzja: bramka go pilnuje) — Owner: user. Block: no (rozstrzygnie `/10x-plan`).
 - **Risk:** Katalog jest minimalny (tyle substancji, ile obejmuje typowa noc), nie kompletny; ryzykiem jest reguła przepisana z błędem, która prowadzi do fałszywego allow — dlatego każda reguła ma źródło.
-- **Status:** ready
+- **Status:** in-progress
 
 ## Slices
 

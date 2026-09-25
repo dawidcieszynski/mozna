@@ -82,7 +82,7 @@ Zasady seedu:
 - Każda reguła ma `source_url` i `checked_at`.
 - Nieznany GTIN → brak rekomendacji, nigdy allow.
 - Brak limitu dobowego w mg → stosuj limit mg/kg; masa powyżej zakresu tabeli (> 40 kg ibuprofen, > 42 kg paracetamol) → block.
-- **Decyzja:** przy naprzemiennym podawaniu paracetamolu i ibuprofenu bramka pilnuje odstępu między substancjami (wartość do ustalenia w `/10x-plan`; ChPL tego nie reguluje).
+- **Decyzja:** przy naprzemiennym podawaniu paracetamolu i ibuprofenu bramka pilnuje odstępu między substancjami — reguła rozstrzygnięta w sekcji 6.
 
 ## Nierozstrzygnięte
 
@@ -90,4 +90,17 @@ Zasady seedu:
 - status Nurofenu 100 mg/5 ml,
 - dokładne przypisanie pasm masa–wiek w tabeli Forte,
 - dawkowanie czopków paracetamolu (poza v1),
-- wartość odstępu przy podawaniu naprzemiennym.
+- ~~wartość odstępu przy podawaniu naprzemiennym~~ — rozstrzygnięte w sekcji 6.
+
+## 6. Naprzemienne podawanie paracetamolu i ibuprofenu (sprawdzone 2026-09-25)
+
+Żadne ChPL ani wytyczna nie podaje obowiązującego odstępu między dwiema substancjami.
+
+- **PTP + Konsultant Krajowy, Przegl Pediatr 2024;53(4):32-43** — https://ptp.edu.pl/najnowsze-zalecenia-dotyczace-leczenia-przeciwgoraczkowego-u-dzieci-w-wieku-0-36-miesiecy/ — „Nie zalecamy naprzemiennego stosowania ibuprofenu i paracetamolu.” (pełny tekst za paywallem, niesprawdzony).
+- **NHS** — https://www.nhs.uk/conditions/fever-in-children/ — „do not alternate ibuprofen and paracetamol, unless a health professional such as a doctor or nurse tells you to”.
+- **NICE NG143, rek. 1.6.6** — https://www.nice.org.uk/guidance/ng143/chapter/Recommendations — „do not give both agents simultaneously; only consider alternating these agents if the distress persists or recurs before the next dose is due.” Bez liczby godzin.
+- **AAP, Sullivan & Farrar 2011, PMID 21357332** i **Cochrane CD009572 (Wong 2013)** — niewystarczające dowody na schemat łączony/naprzemienny.
+- **MP, Grygalewicz 2014** — https://www.mp.pl/pytania/pediatria/chapter/B25.QA.1.5.5. — jedyna konkretna liczba (4 h); ten sam autor w 2018 (B25.QA.1.5.4.): „nie opublikowano żadnego ogólnie przyjętego schematu”.
+- **ChPL Panadol 4.5**: skojarzenie paracetamolu z NLPZ zwiększa ryzyko zaburzeń czynności nerek. **ChPL Nurofen Forte**: brak wzmianki o paracetamolu.
+
+**Decyzja (user, 2026-09-25):** dopóki nie minął własny minimalny odstęp substancji podanej poprzednio, druga substancja dostaje **block** z komunikatem „naprzemienne podawanie tylko po konsultacji z lekarzem”. Źródła reguły: PTP 2024, NHS. Własne odstępy każdej substancji z ChPL obowiązują zawsze, niezależnie od tej reguły.
