@@ -1,7 +1,7 @@
 ---
 change_id: household-with-child
 title: Household with child
-status: new
+status: implementing
 created: 2026-09-25
 updated: 2026-09-25
 archived_at: null
