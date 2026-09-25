@@ -390,11 +390,11 @@ Pierwsza migracja projektu, brak danych do przeniesienia. Wycofanie Workera (`wr
 
 #### Automated
 
-- [x] 4.1 Deploy kończy się sukcesem: `npx wrangler deploy` zwraca Version ID
-- [x] 4.2 Anonim na produkcji: `GET /dashboard` → `302 /auth/signin`, `GET /household/new` → `302 /auth/signin`
+- [x] 4.1 Deploy kończy się sukcesem: `npx wrangler deploy` zwraca Version ID — 377e0fa
+- [x] 4.2 Anonim na produkcji: `GET /dashboard` → `302 /auth/signin`, `GET /household/new` → `302 /auth/signin` — 377e0fa
 
 #### Manual
 
-- [x] 4.3 `npx supabase migration list` pokazuje migrację jako zastosowaną zdalnie
-- [x] 4.4 Na produkcji własnym kontem: założenie gospodarstwa i dodanie syntetycznego dziecka działa
-- [x] 4.5 W Supabase Dashboard tabele produkcyjne mają włączony RLS
+- [x] 4.3 `npx supabase migration list` pokazuje migrację jako zastosowaną zdalnie — 377e0fa
+- [x] 4.4 Na produkcji własnym kontem: założenie gospodarstwa i dodanie syntetycznego dziecka działa — 377e0fa
+- [x] 4.5 W Supabase Dashboard tabele produkcyjne mają włączony RLS — 377e0fa
