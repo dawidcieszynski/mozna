@@ -1,0 +1,40 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { ServerError } from "@/components/auth/ServerError";
+
+const error = Astro.url.searchParams.get("error");
+---
+
+<Layout title="Załóż gospodarstwo · Można?">
+  <div class="bg-cosmic flex min-h-screen items-center justify-center p-4">
+    <div class="w-full max-w-sm rounded-2xl border border-white/10 bg-white/10 p-8 text-white backdrop-blur-xl">
+      <h1 class="mb-2 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-center text-2xl font-bold text-transparent">
+        Załóż gospodarstwo
+      </h1>
+      <p class="mb-6 text-center text-sm text-blue-100/60">Gospodarstwo grupuje dzieci, którymi się opiekujesz.</p>
+      <form method="POST" action="/api/household" class="space-y-4">
+        <div>
+          <label for="name" class="mb-1 block text-sm text-blue-100/80">
+            Nazwa gospodarstwa
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            maxlength={80}
+            placeholder="np. Dom"
+            class="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-white placeholder-white/40 transition-colors focus:ring-2 focus:ring-purple-400 focus:outline-none"
+          />
+        </div>
+        <ServerError message={error} />
+        <button
+          type="submit"
+          class="w-full rounded-lg bg-purple-600 px-4 py-2 font-medium text-white transition-colors hover:bg-purple-500"
+        >
+          Załóż gospodarstwo
+        </button>
+      </form>
+    </div>
+  </div>
+</Layout>

@@ -345,29 +345,29 @@ Pierwsza migracja projektu, brak danych do przeniesienia. Wycofanie Workera (`wr
 
 #### Automated
 
-- [x] 1.1 Migracja stosuje się czysto: `npx supabase db reset`
-- [x] 1.2 Testy RLS przechodzą: `npx supabase test db`
-- [x] 1.3 Lint przechodzi: `npm run lint`
-- [ ] 1.4 CI na pushu: job `smoke` z krokiem `supabase test db` jest zielony
+- [x] 1.1 Migracja stosuje się czysto: `npx supabase db reset` — cd5da67
+- [x] 1.2 Testy RLS przechodzą: `npx supabase test db` — cd5da67
+- [x] 1.3 Lint przechodzi: `npm run lint` — cd5da67
+- [x] 1.4 CI na pushu: job `smoke` z krokiem `supabase test db` jest zielony — cd5da67
 
 #### Manual
 
-- [x] 1.5 W Supabase Studio lokalnie tabele mają włączony RLS i polityki zgodne z kontraktem (bez polityk DELETE)
+- [x] 1.5 W Supabase Studio lokalnie tabele mają włączony RLS i polityki zgodne z kontraktem (bez polityk DELETE) — cd5da67
 
 ### Phase 2: Kontekst gospodarstwa i onboarding
 
 #### Automated
 
-- [ ] 2.1 Lint przechodzi: `npm run lint`
-- [ ] 2.2 Typy przechodzą: `npx astro check`
-- [ ] 2.3 Build przechodzi: `npm run build`
-- [ ] 2.4 Smoke przechodzi wobec lokalnego serwera na lokalnym Supabase: `npm run smoke`
-- [ ] 2.5 Testy RLS nadal przechodzą: `npx supabase test db`
+- [x] 2.1 Lint przechodzi: `npm run lint`
+- [x] 2.2 Typy przechodzą: `npx astro check`
+- [x] 2.3 Build przechodzi: `npm run build`
+- [x] 2.4 Smoke przechodzi wobec lokalnego serwera na lokalnym Supabase: `npm run smoke`
+- [x] 2.5 Testy RLS nadal przechodzą: `npx supabase test db`
 
 #### Manual
 
-- [ ] 2.6 Nowe konto po zalogowaniu trafia na „Załóż gospodarstwo”, po zapisaniu na dashboard z nazwą gospodarstwa
-- [ ] 2.7 Wejście na `/household/new` z istniejącym gospodarstwem przekierowuje na dashboard
+- [x] 2.6 Nowe konto po zalogowaniu trafia na „Załóż gospodarstwo”, po zapisaniu na dashboard z nazwą gospodarstwa
+- [x] 2.7 Wejście na `/household/new` z istniejącym gospodarstwem przekierowuje na dashboard
 
 ### Phase 3: Dzieci — dodanie, wybór, aktualizacja wagi
 

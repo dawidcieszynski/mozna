@@ -53,7 +53,17 @@ const steps = [
     () => request("/api/auth/signin", { method: "POST", form: { email, password } }),
     { status: 302, location: "/" },
   ],
-  ["dashboard renders for signed-in user", () => request("/dashboard"), { status: 200 }],
+  [
+    "dashboard sends user without household to onboarding",
+    () => request("/dashboard"),
+    { status: 302, location: "/household/new" },
+  ],
+  [
+    "household onboarding creates household",
+    () => request("/api/household", { method: "POST", form: { name: "Dom testowy" } }),
+    { status: 302, location: "/dashboard" },
+  ],
+  ["dashboard renders for user with household", () => request("/dashboard"), { status: 200 }],
   ["signout clears session", () => request("/api/auth/signout", { method: "POST" }), { status: 302, location: "/" }],
   ["dashboard redirects after signout", () => request("/dashboard"), { status: 302, location: "/auth/signin" }],
 ];
