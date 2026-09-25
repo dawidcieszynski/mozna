@@ -373,28 +373,28 @@ Pierwsza migracja projektu, brak danych do przeniesienia. Wycofanie Workera (`wr
 
 #### Automated
 
-- [x] 3.1 Lint przechodzi: `npm run lint`
-- [x] 3.2 Typy przechodzą: `npx astro check`
-- [x] 3.3 Build przechodzi: `npm run build`
-- [x] 3.4 Smoke przechodzi wobec lokalnego serwera na lokalnym Supabase: `npm run smoke`
-- [x] 3.5 Testy RLS nadal przechodzą: `npx supabase test db`
+- [x] 3.1 Lint przechodzi: `npm run lint` — 419cb86
+- [x] 3.2 Typy przechodzą: `npx astro check` — 419cb86
+- [x] 3.3 Build przechodzi: `npm run build` — 419cb86
+- [x] 3.4 Smoke przechodzi wobec lokalnego serwera na lokalnym Supabase: `npm run smoke` — 419cb86
+- [x] 3.5 Testy RLS nadal przechodzą: `npx supabase test db` — 419cb86
 
 #### Manual
 
-- [x] 3.6 Dodanie dziecka z poprawnymi danymi prowadzi do jego widoku; dziecko jest na liście dashboardu
-- [x] 3.7 Waga z przecinkiem („12,5”) zapisuje się jako 12.5 kg; data urodzenia w przyszłości i waga 0 są odrzucane z czytelnym komunikatem
-- [x] 3.8 Aktualizacja wagi zmienia wagę i datę pomiaru w widoku dziecka
-- [x] 3.9 Drugie konto (inne gospodarstwo) nie widzi dziecka na liście, a wejście na jego `/children/<id>` daje 404
+- [x] 3.6 Dodanie dziecka z poprawnymi danymi prowadzi do jego widoku; dziecko jest na liście dashboardu — 419cb86
+- [x] 3.7 Waga z przecinkiem („12,5”) zapisuje się jako 12.5 kg; data urodzenia w przyszłości i waga 0 są odrzucane z czytelnym komunikatem — 419cb86
+- [x] 3.8 Aktualizacja wagi zmienia wagę i datę pomiaru w widoku dziecka — 419cb86
+- [x] 3.9 Drugie konto (inne gospodarstwo) nie widzi dziecka na liście, a wejście na jego `/children/<id>` daje 404 — 419cb86
 
 ### Phase 4: Wdrożenie na produkcję
 
 #### Automated
 
-- [ ] 4.1 Deploy kończy się sukcesem: `npx wrangler deploy` zwraca Version ID
-- [ ] 4.2 Anonim na produkcji: `GET /dashboard` → `302 /auth/signin`, `GET /household/new` → `302 /auth/signin`
+- [x] 4.1 Deploy kończy się sukcesem: `npx wrangler deploy` zwraca Version ID
+- [x] 4.2 Anonim na produkcji: `GET /dashboard` → `302 /auth/signin`, `GET /household/new` → `302 /auth/signin`
 
 #### Manual
 
-- [ ] 4.3 `npx supabase migration list` pokazuje migrację jako zastosowaną zdalnie
-- [ ] 4.4 Na produkcji własnym kontem: założenie gospodarstwa i dodanie syntetycznego dziecka działa
-- [ ] 4.5 W Supabase Dashboard tabele produkcyjne mają włączony RLS
+- [x] 4.3 `npx supabase migration list` pokazuje migrację jako zastosowaną zdalnie
+- [x] 4.4 Na produkcji własnym kontem: założenie gospodarstwa i dodanie syntetycznego dziecka działa
+- [x] 4.5 W Supabase Dashboard tabele produkcyjne mają włączony RLS

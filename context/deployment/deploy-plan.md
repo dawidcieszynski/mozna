@@ -4,7 +4,7 @@ deployed_at: 2026-09-25
 platform: Cloudflare Workers
 worker_name: mozna
 url: https://mozna.cieszy-ski.workers.dev
-current_version_id: 45f8c663-0b33-4b5e-b5c8-1f5a7f9e9503
+current_version_id: 210b8ab6-6159-4131-9397-f6d3b029c2b4
 source: context/foundation/infrastructure.md, context/foundation/tech-stack.md
 ---
 
@@ -21,7 +21,7 @@ Zatwierdzony w Plan Mode 2026-09-25. Źródło prawdy dla „co jest już wdroż
 | Preview URLs | wyłączone (`preview_urls: false`) — ryzyko ekspozycji danych z rejestru |
 | Bindingi | `ASSETS`, `IMAGES` (bez KV — `session: false` w `astro.config.mjs`) |
 | Secrety Workera | `SUPABASE_URL`, `SUPABASE_KEY` (publishable key; nigdy `secret`/`service_role`) |
-| Supabase | hostowany projekt `mozna`, Central EU (Frankfurt), bez migracji |
+| Supabase | hostowany projekt `mozna`, Central EU (Frankfurt); migracje: `20260925165142_household_and_children` (2026-09-25, `supabase db push` — człowiek) |
 | Auth Cloudflare | Account API Token z szablonu „Edit Cloudflare Workers”, jedno konto, w lokalnym `.env` (gitignored) |
 
 ## Zmiany w repo
@@ -51,6 +51,15 @@ Agent:
 | `POST /api/auth/signin` złe dane, nieistniejące konto | 302 `?error=Invalid login credentials` — Worker ↔ Supabase działa |
 
 Pełny smoke auth (`npm run smoke`, zakłada konto) **nie** jest uruchamiany na produkcji — hostowany Supabase wymaga potwierdzenia e-mail i ma limit SMTP. Zostaje w CI na lokalnym Supabase.
+
+## Historia wdrożeń
+
+| Data | Worker version | Zmiana | Migracja | Weryfikacja |
+|---|---|---|---|---|
+| 2026-09-25 | 45f8c663 | pierwsze wdrożenie (szkielet auth) | — | read-only, patrz wyżej |
+| 2026-09-25 | 210b8ab6 | `household-with-child` (S-01): gospodarstwo, dzieci, RLS | `20260925165142_household_and_children` | anonim → `/auth/signin` na chronionych trasach; schemat prod: RLS na 3 tabelach, 5 polityk, 0 DELETE, UPDATE dzieci tylko waga |
+
+Kolejność przy zmianach schematu: **najpierw `supabase db push` (człowiek), potem `wrangler deploy`** — middleware odpytuje tabele gospodarstwa przy każdym żądaniu zalogowanego użytkownika.
 
 ## Operacje
 
