@@ -49,15 +49,17 @@ select throws_ok(
 );
 
 select lives_ok(
-  $$insert into public.children (id, household_id, display_name, birth_date, weight_kg, weight_measured_at)
-    values (
-      '00000000-0000-4000-8000-0000000000c1',
+  $$with c as (
+      insert into public.children (household_id, display_name, birth_date, weight_kg, weight_measured_at)
+      values (
       (select id from test_ids where k = 'household_a'),
       'Dziecko testowe',
       '2024-01-15',
       12.5,
       '2026-09-01'
-    )$$,
+    ) returning id
+    )
+    insert into test_ids (k, id) select 'child_a', id from c$$,
   'A: inserts a child into own household'
 );
 
@@ -100,7 +102,7 @@ select throws_ok(
 );
 
 select is_empty(
-  $$update public.children set weight_kg = 20 where id = '00000000-0000-4000-8000-0000000000c1' returning id$$,
+  $$update public.children set weight_kg = 20 where id = (select id from test_ids where k = 'child_a') returning id$$,
   'B: update of A''s child affects no rows'
 );
 
@@ -112,13 +114,13 @@ set local role authenticated;
 set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-00000000000a","role":"authenticated"}';
 
 select is(
-  (select weight_kg from public.children where id = '00000000-0000-4000-8000-0000000000c1'),
+  (select weight_kg from public.children where id = (select id from test_ids where k = 'child_a')),
   12.50::numeric(5, 2),
   'A: child weight unchanged after B''s update attempt'
 );
 
 select throws_ok(
-  $$update public.children set birth_date = '2023-01-01' where id = '00000000-0000-4000-8000-0000000000c1'$$,
+  $$update public.children set birth_date = '2023-01-01' where id = (select id from test_ids where k = 'child_a')$$,
   '42501',
   null,
   'A: cannot update birth_date'
@@ -126,7 +128,7 @@ select throws_ok(
 
 select isnt_empty(
   $$update public.children set weight_kg = 13.1, weight_measured_at = '2026-09-20'
-    where id = '00000000-0000-4000-8000-0000000000c1' returning id$$,
+    where id = (select id from test_ids where k = 'child_a') returning id$$,
   'A: can update weight'
 );
 
@@ -145,9 +147,11 @@ reset role;
 set local role anon;
 set local request.jwt.claims = '{"role":"anon"}';
 
-select is_empty(
+select throws_ok(
   $$select id from public.children$$,
-  'anon: sees no children'
+  '42501',
+  null,
+  'anon: has no table privileges on children'
 );
 
 select throws_ok(

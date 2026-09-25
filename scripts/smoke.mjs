@@ -90,6 +90,17 @@ const steps = [
       },
     },
   ],
+  [
+    "older weight measurement is rejected",
+    () =>
+      request(`/api${childPath}/weight`, { method: "POST", form: { weightKg: "11", weightMeasuredAt: "2024-06-01" } }),
+    {
+      status: 302,
+      get location() {
+        return `${childPath}?error=`;
+      },
+    },
+  ],
   ["unknown child returns 404", () => request("/children/00000000-0000-0000-0000-000000000000"), { status: 404 }],
   ["signout clears session", () => request("/api/auth/signout", { method: "POST" }), { status: 302, location: "/" }],
   ["dashboard redirects after signout", () => request("/dashboard"), { status: 302, location: "/auth/signin" }],

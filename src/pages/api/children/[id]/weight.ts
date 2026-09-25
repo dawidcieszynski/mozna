@@ -30,15 +30,15 @@ export const POST: APIRoute = async (context) => {
   // RLS hides children of other households, so "foreign" and "missing" look the same.
   const { data: child, error: readError } = await supabase
     .from("children")
-    .select("birth_date")
+    .select("birth_date, weight_measured_at")
     .eq("id", id.data)
-    .maybeSingle<{ birth_date: string }>();
+    .maybeSingle<{ birth_date: string; weight_measured_at: string }>();
   if (readError || !child) {
     return toDashboard(NOT_FOUND_MESSAGE);
   }
 
   const form = await context.request.formData();
-  const parsed = weightUpdateSchema(today(), child.birth_date).safeParse({
+  const parsed = weightUpdateSchema(today(), child.birth_date, child.weight_measured_at).safeParse({
     weightKg: formText(form, "weightKg"),
     weightMeasuredAt: formText(form, "weightMeasuredAt"),
   });

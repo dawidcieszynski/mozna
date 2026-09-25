@@ -57,7 +57,7 @@ Pełny smoke auth (`npm run smoke`, zakłada konto) **nie** jest uruchamiany na 
 | Data | Worker version | Zmiana | Migracja | Weryfikacja |
 |---|---|---|---|---|
 | 2026-09-25 | 45f8c663 | pierwsze wdrożenie (szkielet auth) | — | read-only, patrz wyżej |
-| 2026-09-25 | 210b8ab6 | `household-with-child` (S-01): gospodarstwo, dzieci, RLS | `20260925165142_household_and_children` | anonim → `/auth/signin` na chronionych trasach; schemat prod: RLS na 3 tabelach, 5 polityk, 0 DELETE, UPDATE dzieci tylko waga |
+| 2026-09-25 | 210b8ab6 | `household-with-child` (S-01): gospodarstwo, dzieci, RLS | `20260925165142_household_and_children` | anonim → `/auth/signin` na chronionych trasach; schemat prod: RLS na 3 tabelach, 5 polityk, 0 DELETE, UPDATE dzieci tylko waga; przepływ zalogowanego (gospodarstwo, syntetyczne dziecko, aktualizacja wagi) potwierdzony ręcznie przez człowieka |
 
 Kolejność przy zmianach schematu: **najpierw `supabase db push` (człowiek), potem `wrangler deploy`** — middleware odpytuje tabele gospodarstwa przy każdym żądaniu zalogowanego użytkownika.
 

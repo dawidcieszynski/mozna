@@ -75,13 +75,12 @@ export function childSchema(todayDate: string) {
     });
 }
 
-export function weightUpdateSchema(todayDate: string, birthDate: string) {
+export function weightUpdateSchema(todayDate: string, birthDate: string, lastMeasuredAt: string) {
   return z.object({
     weightKg,
-    weightMeasuredAt: weightMeasuredAt(todayDate).refine(
-      (value) => value >= birthDate,
-      "Data pomiaru nie może być wcześniejsza niż data urodzenia",
-    ),
+    weightMeasuredAt: weightMeasuredAt(todayDate)
+      .refine((value) => value >= birthDate, "Data pomiaru nie może być wcześniejsza niż data urodzenia")
+      .refine((value) => value >= lastMeasuredAt, "Data pomiaru nie może być wcześniejsza niż data ostatniego pomiaru"),
   });
 }
 
