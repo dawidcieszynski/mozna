@@ -65,8 +65,9 @@ niewiadome niewiadome (czego nie widać w dokumentacji).
 Pełny blok reguł 10xDevs to materiał płatnego kursu i nie trafia do repozytorium.
 Pobierz lokalnie własnym kontem (`npx @przeprogramowani/10x-cli sync --all`).
 CLI domyślnie nie wstawia bloku do tego pliku (`--no-course-rules`) — mimo to
-po `get --type rules` potrafi dopisać marker; wtedy wytnij sekcję
-`<!-- BEGIN @przeprogramowani/10x-cli -->` … `<!-- END … -->`.
+po `get --type rules` potrafi dopisać blok; wtedy wytnij sekcję między
+komentarzami HTML `BEGIN` / `END` z nazwą pakietu CLI. Nie cytuj tu dosłownie
+tych markerów — CLI parsuje ten plik i odrzuca osierocony marker.
 
 @.claude/10x-course-rules.md
 
