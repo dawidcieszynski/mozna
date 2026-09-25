@@ -67,7 +67,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Backend / API:** present — trasy API Astro, na razie tylko auth (`src/pages/api/auth/*`).
 - **Data:** absent — brak schematu i migracji (`supabase/` zawiera tylko `config.toml`); jest klient `src/lib/supabase.ts`.
 - **Auth:** present — Supabase e-mail/hasło, sesje w cookies, ochrona tras w `src/middleware.ts`; zweryfikowane na produkcji. Brak gospodarstwa i członkostwa.
-- **Deploy / infra:** present — Worker `mozna` na `https://mozna.cieszy-ski.workers.dev` (`context/deployment/deploy-plan.md`), CI w `.github/workflows/ci.yml`; brak remote GitHub, więc CI jeszcze nie działało; brak auto-deployu.
+- **Deploy / infra:** present — Worker `mozna` na `https://mozna.cieszy-ski.workers.dev` (`context/deployment/deploy-plan.md`), CI w `.github/workflows/ci.yml` na `github.com/dawidcieszynski/mozna` (pierwszy przebieg zielony 2026-09-25: lint, check, build, smoke auth); brak auto-deployu.
 - **Observability:** partial — Workers observability włączone w `wrangler.jsonc`, `wrangler tail`; brak logowania błędów po stronie aplikacji.
 
 ## Foundations
@@ -170,8 +170,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 4. **Legal disclaimer wording** (register/calculator, not a medical device, does not replace a clinician) before any public URL — Owner: user. Block: — ; uwaga: adres `*.workers.dev` jest już publiczny, więc treść powinna trafić na stronę najpóźniej z S-02, gdy pojawi się pierwsza dawka.
 5. **target_scale.qps and target_scale.data_volume** — Owner: user. Block: —.
 6. **Administration edit/delete policy** — Owner: user. Block: — (S-03 dostarcza tylko zapis i odczyt).
-7. **Kiedy podłączyć remote GitHub**, żeby bramka CI z `.github/workflows/ci.yml` zaczęła działać przed pierwszym wycinkiem z logiką domenową? — Owner: user. Block: —.
-8. **Dokumentacja projektu do przygotowania na koniec MVP**: log decyzji, mapowanie wymagań na ścieżki w `README.md`, plan testów wymieniający też ryzyka bez automatycznego pokrycia (przeniesione z poprzedniej wersji roadmapy). — Owner: user. Block: —.
+7. **Dokumentacja projektu do przygotowania na koniec MVP**: log decyzji, mapowanie wymagań na ścieżki w `README.md`, plan testów wymieniający też ryzyka bez automatycznego pokrycia (przeniesione z poprzedniej wersji roadmapy). — Owner: user. Block: —.
 
 ## Parked
 
