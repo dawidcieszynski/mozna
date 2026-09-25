@@ -4,7 +4,7 @@ deployed_at: 2026-09-25
 platform: Cloudflare Workers
 worker_name: mozna
 url: https://mozna.cieszy-ski.workers.dev
-current_version_id: 210b8ab6-6159-4131-9397-f6d3b029c2b4
+current_version_id: 259cf1b7-4257-4ec2-b1a0-779b965bd433
 source: context/foundation/infrastructure.md, context/foundation/tech-stack.md
 ---
 
@@ -21,7 +21,7 @@ Zatwierdzony w Plan Mode 2026-09-25. Źródło prawdy dla „co jest już wdroż
 | Preview URLs | wyłączone (`preview_urls: false`) — ryzyko ekspozycji danych z rejestru |
 | Bindingi | `ASSETS`, `IMAGES` (bez KV — `session: false` w `astro.config.mjs`) |
 | Secrety Workera | `SUPABASE_URL`, `SUPABASE_KEY` (publishable key; nigdy `secret`/`service_role`) |
-| Supabase | hostowany projekt `mozna`, Central EU (Frankfurt); migracje: `20260925165142_household_and_children` (2026-09-25, `supabase db push` — człowiek) |
+| Supabase | hostowany projekt `mozna`, Central EU (Frankfurt); migracje: `20260925165142_household_and_children`, `20260925200500_household_hardening` (2026-09-25, `supabase db push` — człowiek) |
 | Auth Cloudflare | Account API Token z szablonu „Edit Cloudflare Workers”, jedno konto, w lokalnym `.env` (gitignored) |
 
 ## Zmiany w repo
@@ -58,6 +58,7 @@ Pełny smoke auth (`npm run smoke`, zakłada konto) **nie** jest uruchamiany na 
 |---|---|---|---|---|
 | 2026-09-25 | 45f8c663 | pierwsze wdrożenie (szkielet auth) | — | read-only, patrz wyżej |
 | 2026-09-25 | 210b8ab6 | `household-with-child` (S-01): gospodarstwo, dzieci, RLS | `20260925165142_household_and_children` | anonim → `/auth/signin` na chronionych trasach; schemat prod: RLS na 3 tabelach, 5 polityk, 0 DELETE, UPDATE dzieci tylko waga; przepływ zalogowanego (gospodarstwo, syntetyczne dziecko, aktualizacja wagi) potwierdzony ręcznie przez człowieka |
+| 2026-09-25 | 259cf1b7 | poprawki z przeglądu `household-with-child` (F1 waga, F2/F3/F6 baza) | `20260925200500_household_hardening` | anonim → `/auth/signin`; schemat prod: trigger `household_members_delete_empty_household`, CHECK `children_weight_measured_after_birth`, anon bez grantów, authenticated: SELECT + INSERT kolumn danych + UPDATE wagi |
 
 Kolejność przy zmianach schematu: **najpierw `supabase db push` (człowiek), potem `wrangler deploy`** — middleware odpytuje tabele gospodarstwa przy każdym żądaniu zalogowanego użytkownika.
 
