@@ -1,0 +1,106 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { ServerError } from "@/components/auth/ServerError";
+import { z } from "astro/zod";
+import { createClient } from "@/lib/supabase";
+import { CHILD_COLUMNS, formatDate, formatWeight, toChild, today, type ChildRow } from "@/lib/services/children";
+import type { Child } from "@/types";
+
+const error = Astro.url.searchParams.get("error");
+
+let child: Child | null = null;
+const id = z.uuid().safeParse(Astro.params.id);
+const supabase = createClient(Astro.request.headers, Astro.cookies);
+if (id.success && supabase) {
+  // RLS returns no row for a child of another household — same 404 as a missing one.
+  const { data, error: loadError } = await supabase
+    .from("children")
+    .select(CHILD_COLUMNS)
+    .eq("id", id.data)
+    .maybeSingle<ChildRow>();
+  if (loadError) {
+    throw new Error("Nie udało się wczytać danych dziecka.");
+  }
+  child = data ? toChild(data) : null;
+}
+
+if (!child) {
+  Astro.response.status = 404;
+}
+
+const todayDate = today();
+const labelClass = "mb-1 block text-sm text-blue-100/80";
+const inputClass =
+  "w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-white placeholder-white/40 transition-colors focus:ring-2 focus:ring-purple-400 focus:outline-none";
+---
+
+<Layout title={child ? `${child.displayName} · Można?` : "Nie znaleziono · Można?"}>
+  <div class="bg-cosmic flex min-h-screen items-center justify-center p-4">
+    <div class="w-full max-w-md space-y-6 rounded-2xl border border-white/10 bg-white/10 p-8 text-white backdrop-blur-xl">
+      <a href="/dashboard" class="text-sm text-blue-100/70 hover:text-white">
+        ← Wróć do listy dzieci
+      </a>
+      {child ? (
+        <>
+          <header>
+            <h1 class="mb-2 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-3xl font-bold text-transparent">
+              {child.displayName}
+            </h1>
+            <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
+              <dt class="text-blue-100/70">Data urodzenia</dt>
+              <dd>{formatDate(child.birthDate)}</dd>
+              <dt class="text-blue-100/70">Waga</dt>
+              <dd>{formatWeight(child.weightKg)}</dd>
+              <dt class="text-blue-100/70">Data pomiaru</dt>
+              <dd>{formatDate(child.weightMeasuredAt)}</dd>
+            </dl>
+          </header>
+
+          <section>
+            <h2 class="mb-3 text-lg font-semibold">Aktualizuj wagę</h2>
+            <form method="POST" action={`/api/children/${child.id}/weight`} class="space-y-4">
+              <div>
+                <label for="weightKg" class:list={labelClass}>
+                  Waga (kg)
+                </label>
+                <input
+                  id="weightKg"
+                  name="weightKg"
+                  type="text"
+                  inputmode="decimal"
+                  required
+                  placeholder="np. 12,5"
+                  class:list={inputClass}
+                />
+              </div>
+              <div>
+                <label for="weightMeasuredAt" class:list={labelClass}>
+                  Data pomiaru wagi
+                </label>
+                <input
+                  id="weightMeasuredAt"
+                  name="weightMeasuredAt"
+                  type="date"
+                  required
+                  value={todayDate}
+                  min={child.birthDate}
+                  max={todayDate}
+                  class:list={inputClass}
+                />
+              </div>
+              <ServerError message={error} />
+              <button
+                type="submit"
+                class="w-full rounded-lg bg-purple-600 px-4 py-2 font-medium text-white transition-colors hover:bg-purple-500"
+              >
+                Zapisz wagę
+              </button>
+            </form>
+          </section>
+        </>
+      ) : (
+        <h1 class="text-2xl font-bold">Nie znaleziono dziecka</h1>
+      )}
+    </div>
+  </div>
+</Layout>

@@ -358,33 +358,33 @@ Pierwsza migracja projektu, brak danych do przeniesienia. Wycofanie Workera (`wr
 
 #### Automated
 
-- [x] 2.1 Lint przechodzi: `npm run lint`
-- [x] 2.2 Typy przechodzą: `npx astro check`
-- [x] 2.3 Build przechodzi: `npm run build`
-- [x] 2.4 Smoke przechodzi wobec lokalnego serwera na lokalnym Supabase: `npm run smoke`
-- [x] 2.5 Testy RLS nadal przechodzą: `npx supabase test db`
+- [x] 2.1 Lint przechodzi: `npm run lint` — 7774e9c
+- [x] 2.2 Typy przechodzą: `npx astro check` — 7774e9c
+- [x] 2.3 Build przechodzi: `npm run build` — 7774e9c
+- [x] 2.4 Smoke przechodzi wobec lokalnego serwera na lokalnym Supabase: `npm run smoke` — 7774e9c
+- [x] 2.5 Testy RLS nadal przechodzą: `npx supabase test db` — 7774e9c
 
 #### Manual
 
-- [x] 2.6 Nowe konto po zalogowaniu trafia na „Załóż gospodarstwo”, po zapisaniu na dashboard z nazwą gospodarstwa
-- [x] 2.7 Wejście na `/household/new` z istniejącym gospodarstwem przekierowuje na dashboard
+- [x] 2.6 Nowe konto po zalogowaniu trafia na „Załóż gospodarstwo”, po zapisaniu na dashboard z nazwą gospodarstwa — 7774e9c
+- [x] 2.7 Wejście na `/household/new` z istniejącym gospodarstwem przekierowuje na dashboard — 7774e9c
 
 ### Phase 3: Dzieci — dodanie, wybór, aktualizacja wagi
 
 #### Automated
 
-- [ ] 3.1 Lint przechodzi: `npm run lint`
-- [ ] 3.2 Typy przechodzą: `npx astro check`
-- [ ] 3.3 Build przechodzi: `npm run build`
-- [ ] 3.4 Smoke przechodzi wobec lokalnego serwera na lokalnym Supabase: `npm run smoke`
-- [ ] 3.5 Testy RLS nadal przechodzą: `npx supabase test db`
+- [x] 3.1 Lint przechodzi: `npm run lint`
+- [x] 3.2 Typy przechodzą: `npx astro check`
+- [x] 3.3 Build przechodzi: `npm run build`
+- [x] 3.4 Smoke przechodzi wobec lokalnego serwera na lokalnym Supabase: `npm run smoke`
+- [x] 3.5 Testy RLS nadal przechodzą: `npx supabase test db`
 
 #### Manual
 
-- [ ] 3.6 Dodanie dziecka z poprawnymi danymi prowadzi do jego widoku; dziecko jest na liście dashboardu
-- [ ] 3.7 Waga z przecinkiem („12,5”) zapisuje się jako 12.5 kg; data urodzenia w przyszłości i waga 0 są odrzucane z czytelnym komunikatem
-- [ ] 3.8 Aktualizacja wagi zmienia wagę i datę pomiaru w widoku dziecka
-- [ ] 3.9 Drugie konto (inne gospodarstwo) nie widzi dziecka na liście, a wejście na jego `/children/<id>` daje 404
+- [x] 3.6 Dodanie dziecka z poprawnymi danymi prowadzi do jego widoku; dziecko jest na liście dashboardu
+- [x] 3.7 Waga z przecinkiem („12,5”) zapisuje się jako 12.5 kg; data urodzenia w przyszłości i waga 0 są odrzucane z czytelnym komunikatem
+- [x] 3.8 Aktualizacja wagi zmienia wagę i datę pomiaru w widoku dziecka
+- [x] 3.9 Drugie konto (inne gospodarstwo) nie widzi dziecka na liście, a wejście na jego `/children/<id>` daje 404
 
 ### Phase 4: Wdrożenie na produkcję
 

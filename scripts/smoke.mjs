@@ -5,6 +5,9 @@ const BASE_URL = process.env.BASE_URL ?? "http://localhost:4321";
 const email = `smoke-${Date.now()}@example.com`;
 const password = "Smoke-Test-Passw0rd!";
 const jar = new Map();
+// Same calendar day the server validates against (Europe/Warsaw).
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Warsaw" }).format(new Date());
+let childPath = "";
 
 function cookieHeader() {
   return [...jar.entries()].map(([k, v]) => `${k}=${v}`).join("; ");
@@ -64,6 +67,30 @@ const steps = [
     { status: 302, location: "/dashboard" },
   ],
   ["dashboard renders for user with household", () => request("/dashboard"), { status: 200 }],
+  [
+    "adding a child opens its view",
+    async () => {
+      const result = await request("/api/children", {
+        method: "POST",
+        form: { displayName: "Dziecko testowe", birthDate: "2024-01-15", weightKg: "12,5", weightMeasuredAt: today },
+      });
+      childPath = result.location.replace(BASE_URL, "");
+      return result;
+    },
+    { status: 302, location: "/children/" },
+  ],
+  ["child view renders", () => request(childPath), { status: 200 }],
+  [
+    "weight update returns to the child",
+    () => request(`/api${childPath}/weight`, { method: "POST", form: { weightKg: "13,2", weightMeasuredAt: today } }),
+    {
+      status: 302,
+      get location() {
+        return childPath;
+      },
+    },
+  ],
+  ["unknown child returns 404", () => request("/children/00000000-0000-0000-0000-000000000000"), { status: 404 }],
   ["signout clears session", () => request("/api/auth/signout", { method: "POST" }), { status: 302, location: "/" }],
   ["dashboard redirects after signout", () => request("/dashboard"), { status: 302, location: "/auth/signin" }],
 ];

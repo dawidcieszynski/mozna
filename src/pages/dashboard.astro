@@ -1,19 +1,142 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { ServerError } from "@/components/auth/ServerError";
+import { createClient } from "@/lib/supabase";
+import { CHILD_COLUMNS, formatDate, formatWeight, toChild, today, type ChildRow } from "@/lib/services/children";
+import type { Child } from "@/types";
 
 const { user, household } = Astro.locals;
+let error = Astro.url.searchParams.get("error");
+
+let children: Child[] = [];
+const supabase = createClient(Astro.request.headers, Astro.cookies);
+if (supabase && household) {
+  const { data, error: loadError } = await supabase
+    .from("children")
+    .select(CHILD_COLUMNS)
+    .eq("household_id", household.id)
+    .order("created_at")
+    .overrideTypes<ChildRow[], { merge: false }>();
+  if (loadError) {
+    error ??= "Nie udało się wczytać listy dzieci. Odśwież stronę.";
+  } else {
+    children = data.map(toChild);
+  }
+}
+
+const todayDate = today();
+const labelClass = "mb-1 block text-sm text-blue-100/80";
+const inputClass =
+  "w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-white placeholder-white/40 transition-colors focus:ring-2 focus:ring-purple-400 focus:outline-none";
 ---
 
 <Layout title="Panel · Można?">
   <div class="bg-cosmic flex min-h-screen items-center justify-center p-4">
-    <div class="rounded-2xl border border-white/10 bg-white/10 p-8 text-center text-white backdrop-blur-xl">
-      <h1 class="mb-4 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-3xl font-bold text-transparent">
-        {household?.name}
-      </h1>
-      <p class="text-blue-100/80">
-        Zalogowano jako <span class="font-semibold text-white">{user?.email}</span>
-      </p>
-      <form method="POST" action="/api/auth/signout" class="mt-6">
+    <div class="w-full max-w-md space-y-8 rounded-2xl border border-white/10 bg-white/10 p-8 text-white backdrop-blur-xl">
+      <header class="text-center">
+        <h1 class="mb-2 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-3xl font-bold text-transparent">
+          {household?.name}
+        </h1>
+        <p class="text-sm text-blue-100/80">
+          Zalogowano jako <span class="font-semibold text-white">{user?.email}</span>
+        </p>
+      </header>
+
+      <ServerError message={error} />
+
+      <section>
+        <h2 class="mb-3 text-lg font-semibold">Dzieci</h2>
+        {children.length === 0 ? (
+          <p class="text-sm text-blue-100/60">Nie masz jeszcze dzieci w gospodarstwie.</p>
+        ) : (
+          <ul class="space-y-2">
+            {children.map((child) => (
+              <li>
+                <a
+                  href={`/children/${child.id}`}
+                  class="block rounded-lg border border-white/10 bg-white/5 px-4 py-3 transition-colors hover:bg-white/15"
+                >
+                  <span class="block font-medium">{child.displayName}</span>
+                  <span class="block text-sm text-blue-100/70">
+                    ur. {formatDate(child.birthDate)} · {formatWeight(child.weightKg)} (pomiar{" "}
+                    {formatDate(child.weightMeasuredAt)})
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section>
+        <h2 class="mb-3 text-lg font-semibold">{children.length === 0 ? "Dodaj pierwsze dziecko" : "Dodaj dziecko"}</h2>
+        <form method="POST" action="/api/children" class="space-y-4">
+          <div>
+            <label for="displayName" class:list={labelClass}>
+              Imię lub przydomek
+            </label>
+            <input
+              id="displayName"
+              name="displayName"
+              type="text"
+              required
+              maxlength={60}
+              placeholder="np. Maluch"
+              class:list={inputClass}
+            />
+          </div>
+          <div>
+            <label for="birthDate" class:list={labelClass}>
+              Data urodzenia
+            </label>
+            <input
+              id="birthDate"
+              name="birthDate"
+              type="date"
+              required
+              min="2000-01-01"
+              max={todayDate}
+              class:list={inputClass}
+            />
+          </div>
+          <div>
+            <label for="weightKg" class:list={labelClass}>
+              Waga (kg)
+            </label>
+            <input
+              id="weightKg"
+              name="weightKg"
+              type="text"
+              inputmode="decimal"
+              required
+              placeholder="np. 12,5"
+              class:list={inputClass}
+            />
+          </div>
+          <div>
+            <label for="weightMeasuredAt" class:list={labelClass}>
+              Data pomiaru wagi
+            </label>
+            <input
+              id="weightMeasuredAt"
+              name="weightMeasuredAt"
+              type="date"
+              required
+              value={todayDate}
+              max={todayDate}
+              class:list={inputClass}
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full rounded-lg bg-purple-600 px-4 py-2 font-medium text-white transition-colors hover:bg-purple-500"
+          >
+            Dodaj dziecko
+          </button>
+        </form>
+      </section>
+
+      <form method="POST" action="/api/auth/signout" class="text-center">
         <button
           type="submit"
           class="rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm transition-colors hover:bg-white/20"
