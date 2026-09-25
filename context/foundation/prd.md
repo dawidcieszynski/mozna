@@ -99,7 +99,7 @@ Login required (account per caregiver). Access is scoped to a household: members
 ## Open Questions
 
 1. **Final product name?** — Working title is „Można?". Owner: user. Non-blocking.
-2. **Which substances and citeable ChPL sources seed the popular catalog / barcode mappings?** — Owner: user. Block: yes for Secondary success criterion and FR-003/FR-004.
+2. **Which substances and citeable ChPL sources seed the popular catalog / barcode mappings?** — Owner: user. **Resolved 2026-09-25:** paracetamol + ibuprofen oral suspensions (Panadol dla dzieci 120 mg/5 ml, ChPL 5104; Nurofen dla dzieci Forte 40 mg/ml, ChPL 33567/33568); barcode mappings hand-seeded from the Rejestr Produktów Leczniczych open data (dane.gov.pl, CC BY 4.0). Details: `context/changes/seed-medication-catalog/research.md`.
 3. **Are patients children only, or adults too?** — Owner: user. Non-blocking for first household flow if v1 stays child-focused.
 4. **Legal disclaimer wording** (register/calculator, not a medical device, does not replace a clinician) before any public URL — Owner: user. By: before public launch.
 5. **target_scale.qps and target_scale.data_volume** — left null in shaping. Owner: user. Non-blocking for stack selection if medium users is enough.

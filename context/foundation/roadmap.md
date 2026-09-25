@@ -41,12 +41,12 @@ O 3:00 dziecko ma gorączkę, a ostatnią dawkę podał ktoś inny w domu — ni
 
 | ID   | Change ID                     | Outcome (user can …)                                                                 | Prerequisites | PRD refs                    | Status   |
 | ---- | ----------------------------- | ------------------------------------------------------------------------------------ | ------------- | --------------------------- | -------- |
-| F-01 | seed-medication-catalog       | (foundation) katalog popularnych substancji z regułami dawkowania i źródłami ChPL jest w bazie | —             | FR-004, FR-005, Success Criteria (Secondary), NFR (deterministyczna bramka), Non-Goals (brak edytora reguł) | blocked  |
+| F-01 | seed-medication-catalog       | (foundation) katalog popularnych substancji z regułami dawkowania i źródłami ChPL jest w bazie | —             | FR-004, FR-005, Success Criteria (Secondary), NFR (deterministyczna bramka), Non-Goals (brak edytora reguł) | ready    |
 | S-01 | household-with-child          | opiekun zakłada gospodarstwo i dodaje dziecko z wagą i wiekiem, a potem je wybiera   | —             | FR-001, FR-002, Access Control | ready    |
 | S-02 | gate-from-popular-list        | opiekun wybiera dziecko i lek z listy i widzi allow / wait / block oraz dawkę        | S-01, F-01    | FR-004, FR-005, US-01, NFR (odpowiedź poniżej ~1 s, deterministyczna bramka), Guardrails (brak fałszywego allow) | proposed |
 | S-03 | record-administration         | opiekun zapisuje podanie i widzi historię podań gospodarstwa; bramka ją uwzględnia   | S-02          | FR-006, FR-007, US-01       | proposed |
 | S-04 | second-caregiver-sees-dose    | drugi opiekun dołącza do gospodarstwa i widzi, że dawkę podano i kiedy wolno następną | S-03          | FR-001, FR-008, US-01, Success Criteria (Primary), Access Control (płaskie członkostwo) | proposed |
-| S-05 | barcode-identification        | opiekun identyfikuje lek, skanując kod kreskowy opakowania                           | S-02, F-01    | FR-003                      | blocked  |
+| S-05 | barcode-identification        | opiekun identyfikuje lek, skanując kod kreskowy opakowania                           | S-02, F-01    | FR-003                      | proposed |
 
 ## Streams
 
@@ -82,9 +82,9 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Parallel with:** S-01
 - **Blockers:** —
 - **Unknowns:**
-  - Które substancje i jakie cytowalne źródła ChPL tworzą katalog? (PRD Open Question 2) — Owner: user. Block: yes.
+  - Wartość odstępu przy naprzemiennym podawaniu paracetamolu i ibuprofenu (decyzja: bramka go pilnuje) — Owner: user. Block: no (rozstrzygnie `/10x-plan`).
 - **Risk:** Katalog jest minimalny (tyle substancji, ile obejmuje typowa noc), nie kompletny; ryzykiem jest reguła przepisana z błędem, która prowadzi do fałszywego allow — dlatego każda reguła ma źródło.
-- **Status:** blocked
+- **Status:** ready
 
 ## Slices
 
@@ -146,26 +146,25 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Prerequisites:** S-02, F-01
 - **Parallel with:** S-03, S-04
 - **Blockers:** —
-- **Unknowns:**
-  - Skąd pochodzą mapowania kod kreskowy → pozycja katalogu (PRD Open Question 2)? — Owner: user. Block: yes.
+- **Unknowns:** —
 - **Risk:** Druga ścieżka wejścia do tej samej bramki; poza drogą do gwiazdy przewodniej, więc przy celu `speed` nie blokuje S-03 / S-04.
-- **Status:** blocked
+- **Status:** proposed
 
 ## Backlog Handoff
 
 | Roadmap ID | Change ID                  | Suggested issue title                                        | Ready for `/10x-plan` | Notes |
 | ---------- | -------------------------- | ------------------------------------------------------------ | --------------------- | ----- |
-| F-01       | seed-medication-catalog    | Katalog popularnych substancji z regułami i źródłami ChPL    | no                    | Czeka na PRD Open Question 2 |
+| F-01       | seed-medication-catalog    | Katalog popularnych substancji z regułami i źródłami ChPL    | yes                   | Run `/10x-plan seed-medication-catalog`; research gotowy |
 | S-01       | household-with-child       | Gospodarstwo i dziecko z wagą i wiekiem                      | yes                   | Run `/10x-plan household-with-child` |
 | S-02       | gate-from-popular-list     | Bramka allow/wait/block i dawka dla leku z listy             | no                    | Po S-01 i F-01 |
 | S-03       | record-administration      | Zapis podania i historia gospodarstwa                        | no                    | Po S-02 |
 | S-04       | second-caregiver-sees-dose | Drugi opiekun widzi podaną dawkę i następny termin           | no                    | Po S-03 |
-| S-05       | barcode-identification     | Identyfikacja leku kodem kreskowym                           | no                    | Czeka na PRD Open Question 2 |
+| S-05       | barcode-identification     | Identyfikacja leku kodem kreskowym                           | no                    | Po S-02 i F-01 |
 
 ## Open Roadmap Questions
 
 1. **Final product name?** — Working title is „Można?". Owner: user. Block: —.
-2. **Which substances and citeable ChPL sources seed the popular catalog / barcode mappings?** — Owner: user. Block: F-01, S-05 (a przez F-01 także S-02 → S-04).
+2. **Which substances and citeable ChPL sources seed the popular catalog / barcode mappings?** — Owner: user. Block: —. Rozstrzygnięte 2026-09-25 (PRD Open Question 2, `context/changes/seed-medication-catalog/research.md`).
 3. **Are patients children only, or adults too?** — Owner: user. Block: — (v1 skupia się na dzieciach).
 4. **Legal disclaimer wording** (register/calculator, not a medical device, does not replace a clinician) before any public URL — Owner: user. Block: — ; uwaga: adres `*.workers.dev` jest już publiczny, więc treść powinna trafić na stronę najpóźniej z S-02, gdy pojawi się pierwsza dawka.
 5. **target_scale.qps and target_scale.data_volume** — Owner: user. Block: —.
