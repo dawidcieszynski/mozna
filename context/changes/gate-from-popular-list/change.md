@@ -40,3 +40,10 @@ From F-01 verification (`context/changes/seed-medication-catalog/verification.md
   the per-kg rule; only weight above it is blocked. Bands stay `[min, max)` in data.
 - Show `products.warnings` (ChPL 4.2 / 4.3 / 4.4 texts) next to the gate answer;
   they never change allow/wait/block.
+
+From the F-01 implementation review (`context/changes/seed-medication-catalog/reviews/impl-review.md`):
+- F2: for `weight_band` products the gate uses the lower of `product_dose_bands.max_doses_24h`
+  and `products.max_doses_24h` (today both are 3; a test guards band ≤ product).
+- F7 (for S-03 `record-administration`): an administration stores a snapshot of what the
+  gate used — product id, dose in mg (and ml), child weight used, rule type / band,
+  catalog `checked_at` — so a later in-place catalog correction never rewrites history.
