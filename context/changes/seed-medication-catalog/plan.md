@@ -289,10 +289,10 @@ Dwie migracje addytywne (schemat, dane). Korekta wartości w przyszłości = now
 
 #### Automated
 
-- [x] 4.1 `npx supabase migration list` pokazuje obie migracje katalogu jako zastosowane zdalnie
-- [x] 4.2 Schemat produkcyjny (`npx supabase db dump --linked --schema public`) zawiera tabele katalogu z RLS i grantem SELECT tylko dla `authenticated`
-- [x] 4.3 Anonim przez REST nie czyta katalogu (`GET /rest/v1/products` z kluczem publishable → brak dostępu)
+- [x] 4.1 `npx supabase migration list` pokazuje obie migracje katalogu jako zastosowane zdalnie — e4a4e6a
+- [x] 4.2 Schemat produkcyjny (`npx supabase db dump --linked --schema public`) zawiera tabele katalogu z RLS i grantem SELECT tylko dla `authenticated` — e4a4e6a
+- [x] 4.3 Anonim przez REST nie czyta katalogu (`GET /rest/v1/products` z kluczem publishable → brak dostępu) — e4a4e6a
 
 #### Manual
 
-- [x] 4.4 W Supabase Dashboard liczba wierszy `products` i pasma w `product_dose_bands` są zgodne z `verification.md`
+- [x] 4.4 W Supabase Dashboard liczba wierszy `products` i pasma w `product_dose_bands` są zgodne z `verification.md` — e4a4e6a
