@@ -5,7 +5,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 
-select plan(19);
+select plan(17);
 
 -- ---------------------------------------------------------------------------
 -- substances
@@ -78,38 +78,58 @@ select results_eq(
 );
 
 -- ---------------------------------------------------------------------------
--- warnings: length and first element per product
+-- warnings: full arrays, transcribed from verification.md (review F4)
 -- ---------------------------------------------------------------------------
 
 select is(
-  (select cardinality(warnings) from public.products where id = 'panadol-dla-dzieci-120mg-5ml'),
-  4,
-  'Panadol has 4 warnings'
+  (select warnings from public.products where id = 'panadol-dla-dzieci-120mg-5ml'),
+  array[
+    'Nie stosować przy nadwrażliwości na paracetamol lub którąkolwiek substancję pomocniczą.',
+    'Nie stosować przy ciężkiej niewydolności wątroby lub nerek.',
+    'Bez konsultacji z lekarzem nie stosować regularnie dłużej niż 3 dni.',
+    'Nie stosować przy dziedzicznej nietolerancji fruktozy (zawiera maltitol i sorbitol).'
+  ]::text[],
+  'Panadol warnings match verification.md'
 );
 select is(
-  (select warnings[1] from public.products where id = 'panadol-dla-dzieci-120mg-5ml'),
-  'Nie stosować przy nadwrażliwości na paracetamol lub którąkolwiek substancję pomocniczą.',
-  'Panadol first warning'
+  (select warnings from public.products where id = 'nurofen-dla-dzieci-forte-pomaranczowy-40mg-ml'),
+  array[
+    'Nie stosować przy nadwrażliwości na ibuprofen lub którąkolwiek substancję pomocniczą.',
+    'Nie stosować, jeśli po kwasie acetylosalicylowym, ibuprofenie lub innym NLPZ wystąpiły reakcje nadwrażliwości (np. skurcz oskrzeli, astma, pokrzywka, obrzęk).',
+    'Nie stosować po krwawieniu lub perforacji przewodu pokarmowego związanych z wcześniejszym leczeniem NLPZ.',
+    'Nie stosować przy czynnej lub nawracającej chorobie wrzodowej żołądka lub dwunastnicy albo krwotoku.',
+    'Nie stosować przy krwawieniu z naczyń mózgowych lub innym czynnym krwawieniu.',
+    'Nie stosować przy ciężkiej niewydolności wątroby, nerek lub serca.',
+    'Nie stosować przy zaburzeniach wytwarzania krwi o nieustalonym pochodzeniu.',
+    'Nie stosować przy ciężkim odwodnieniu (wymioty, biegunka, zbyt mało płynów).',
+    'U dzieci 3–5 mies.: skonsultuj z lekarzem, jeśli objawy nasilają się lub nie ustępują po 24 godzinach.',
+    'U dzieci od 6 mies. do 12 lat: skonsultuj z lekarzem, jeśli lek jest potrzebny dłużej niż 3 dni lub objawy się nasilają.'
+  ]::text[],
+  'Forte pomarańczowy warnings match verification.md'
 );
 select is(
-  (select cardinality(warnings) from public.products where id = 'nurofen-dla-dzieci-forte-pomaranczowy-40mg-ml'),
-  10,
-  'Forte pomarańczowy has 10 warnings'
+  (select warnings from public.products where id = 'nurofen-dla-dzieci-forte-truskawkowy-40mg-ml'),
+  array[
+    'Nie stosować przy nadwrażliwości na ibuprofen lub którąkolwiek substancję pomocniczą.',
+    'Nie stosować, jeśli po kwasie acetylosalicylowym, ibuprofenie lub innym NLPZ wystąpiły reakcje nadwrażliwości (np. skurcz oskrzeli, astma, pokrzywka, obrzęk).',
+    'Nie stosować po krwawieniu lub perforacji przewodu pokarmowego związanych z wcześniejszym leczeniem NLPZ.',
+    'Nie stosować przy czynnej lub nawracającej chorobie wrzodowej żołądka lub dwunastnicy albo krwotoku.',
+    'Nie stosować przy krwawieniu z naczyń mózgowych lub innym czynnym krwawieniu.',
+    'Nie stosować przy ciężkiej niewydolności wątroby, nerek lub serca.',
+    'Nie stosować przy zaburzeniach wytwarzania krwi o nieustalonym pochodzeniu.',
+    'Nie stosować przy ciężkim odwodnieniu (wymioty, biegunka, zbyt mało płynów).',
+    'U dzieci 3–5 mies.: skonsultuj z lekarzem, jeśli objawy nasilają się lub nie ustępują po 24 godzinach.',
+    'U dzieci od 6 mies. do 12 lat: skonsultuj z lekarzem, jeśli lek jest potrzebny dłużej niż 3 dni lub objawy się nasilają.'
+  ]::text[],
+  'Forte truskawkowy warnings match verification.md'
 );
-select is(
-  (select warnings[1] from public.products where id = 'nurofen-dla-dzieci-forte-pomaranczowy-40mg-ml'),
-  'Nie stosować przy nadwrażliwości na ibuprofen lub którąkolwiek substancję pomocniczą.',
-  'Forte pomarańczowy first warning'
-);
-select is(
-  (select cardinality(warnings) from public.products where id = 'nurofen-dla-dzieci-forte-truskawkowy-40mg-ml'),
-  10,
-  'Forte truskawkowy has 10 warnings'
-);
-select is(
-  (select warnings[1] from public.products where id = 'nurofen-dla-dzieci-forte-truskawkowy-40mg-ml'),
-  'Nie stosować przy nadwrażliwości na ibuprofen lub którąkolwiek substancję pomocniczą.',
-  'Forte truskawkowy first warning'
+
+-- A band never allows more doses per day than its product (review F2).
+select is_empty(
+  $$select b.product_id, b.weight_min_kg from public.product_dose_bands b
+    join public.products p on p.id = b.product_id
+    where b.max_doses_24h > p.max_doses_24h$$,
+  'no band allows more doses per 24 h than its product'
 );
 
 -- ---------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 
-select plan(31);
+select plan(41);
 
 -- ---------------------------------------------------------------------------
 -- Privileges as seen by the catalog.
@@ -134,6 +134,129 @@ select lives_ok(
   $$insert into public.product_dose_bands (product_id, weight_min_kg, weight_max_kg, dose_mg, max_doses_24h)
     values ('test_product', 10, 15, 100, 3)$$,
   'adjacent band starting at the previous weight_max_kg is accepted'
+);
+
+-- ---------------------------------------------------------------------------
+-- Implementation review follow-up (F1, F3, F6).
+-- ---------------------------------------------------------------------------
+
+select is(
+  (select count(*)::int from unnest(array['substances', 'products', 'product_dose_bands', 'product_barcodes', 'substance_pair_rules']) as t(name)
+    where has_table_privilege('authenticated', 'public.' || name, 'truncate')),
+  0,
+  'authenticated has no TRUNCATE on any catalog table'
+);
+
+select throws_ok(
+  $$insert into public.products (
+      id, substance_id, name_pl, form, strength_mg_per_ml, chpl_url, rule_type, dose_mg_per_kg,
+      max_doses_24h, max_mg_per_kg_24h, min_age_months, min_weight_kg, max_weight_kg,
+      source_url, checked_at
+    )
+    values (
+      'test_band_with_dose', 'test_substance', 'Produkt testowy', 'oral_suspension', 40, 'https://example.test/chpl', 'weight_band', 10,
+      3, 30, 3, 5, 40,
+      'https://example.test/chpl', '2026-01-01'
+    )$$,
+  '23514',
+  null,
+  'weight_band product with dose_mg_per_kg violates check'
+);
+
+select throws_ok(
+  $$insert into public.products (
+      id, substance_id, name_pl, form, strength_mg_per_ml, chpl_url, rule_type, dose_mg_per_kg,
+      max_doses_24h, max_mg_per_kg_24h, min_age_months, min_weight_kg, max_weight_kg,
+      source_url, checked_at
+    )
+    values (
+      'test_weight_range', 'test_substance', 'Produkt testowy', 'oral_suspension', 40, 'https://example.test/chpl', 'weight_band', null,
+      3, 30, 3, 40, 40,
+      'https://example.test/chpl', '2026-01-01'
+    )$$,
+  '23514',
+  null,
+  'max_weight_kg equal to min_weight_kg violates check'
+);
+
+select throws_ok(
+  $$insert into public.products (
+      id, substance_id, name_pl, form, strength_mg_per_ml, chpl_url, rule_type, dose_mg_per_kg,
+      max_doses_24h, max_mg_per_kg_24h, min_age_months, min_weight_kg, max_weight_kg,
+      source_url, checked_at
+    )
+    values (
+      'test_per_kg_over_ceiling', 'test_substance', 'Produkt testowy', 'oral_suspension', 40, 'https://example.test/chpl', 'per_kg', 20,
+      4, 60, 3, 6, 42,
+      'https://example.test/chpl', '2026-01-01'
+    )$$,
+  '23514',
+  null,
+  'per_kg dose times doses above the daily ceiling violates check'
+);
+
+select throws_ok(
+  $$insert into public.products (
+      id, substance_id, name_pl, form, strength_mg_per_ml, chpl_url, rule_type, dose_mg_per_kg,
+      max_doses_24h, max_mg_per_kg_24h, min_age_months, min_weight_kg, max_weight_kg,
+      source_url, checked_at
+    )
+    values (
+      'test_per_kg_zero_dose', 'test_substance', 'Produkt testowy', 'oral_suspension', 40, 'https://example.test/chpl', 'per_kg', 0,
+      4, 60, 3, 6, 42,
+      'https://example.test/chpl', '2026-01-01'
+    )$$,
+  '23514',
+  null,
+  'per_kg dose of 0 violates check'
+);
+
+select throws_ok(
+  $$insert into public.products (
+      id, substance_id, name_pl, form, strength_mg_per_ml, chpl_url, rule_type, dose_mg_per_kg,
+      max_doses_24h, max_mg_per_kg_24h, min_age_months, min_weight_kg, max_weight_kg,
+      source_url, checked_at
+    )
+    values (
+      'test_negative_weight', 'test_substance', 'Produkt testowy', 'oral_suspension', 40, 'https://example.test/chpl', 'weight_band', null,
+      3, 30, 3, -1, 40,
+      'https://example.test/chpl', '2026-01-01'
+    )$$,
+  '23514',
+  null,
+  'negative min_weight_kg violates check'
+);
+
+select throws_ok(
+  $$insert into public.product_dose_bands (product_id, weight_min_kg, weight_max_kg, dose_mg, max_doses_24h)
+    values ('test_product', 40, 40, 100, 3)$$,
+  '23514',
+  null,
+  'band with weight_max_kg equal to weight_min_kg violates check'
+);
+
+select throws_ok(
+  $$insert into public.product_dose_bands (product_id, weight_min_kg, weight_max_kg, dose_mg, max_doses_24h)
+    values ('test_product', 40, 45, 0, 3)$$,
+  '23514',
+  null,
+  'band dose_mg of 0 violates check'
+);
+
+select throws_ok(
+  $$insert into public.product_dose_bands (product_id, weight_min_kg, weight_max_kg, dose_mg, max_doses_24h)
+    values ('test_product', 140, 160, 300, 3)$$,
+  '23514',
+  null,
+  'band above 150 kg violates check'
+);
+
+select throws_ok(
+  $$insert into public.substances (id, name_pl, min_interval_hours, source_url, checked_at)
+    values ('test_short_interval', 'Substancja testowa krótka', 0.4, 'https://example.test/substance', '2026-01-01')$$,
+  '23514',
+  null,
+  'min_interval_hours below 1 h violates check'
 );
 
 select * from finish();

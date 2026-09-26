@@ -1,7 +1,7 @@
 ---
 change_id: seed-medication-catalog
 title: Minimal seeded medication catalog with cited ChPL rules
-status: implemented
+status: impl_reviewed
 created: 2026-09-25
 updated: 2026-09-26
 archived_at: null
