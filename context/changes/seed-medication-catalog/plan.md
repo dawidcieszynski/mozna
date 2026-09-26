@@ -266,24 +266,24 @@ Dwie migracje addytywne (schemat, dane). Korekta wartości w przyszłości = now
 
 #### Automated
 
-- [x] 2.1 Każde pole danych z kontraktu fazy 1 ma wiersz w `verification.md`: skrypt Node w scratchpadzie porównuje kolumny z `information_schema.columns` (tabele katalogu, bez `id`/FK) z nazwami `tabela.kolumna` w `verification.md` i wypisuje braki (0 braków)
+- [x] 2.1 Każde pole danych z kontraktu fazy 1 ma wiersz w `verification.md`: skrypt Node w scratchpadzie porównuje kolumny z `information_schema.columns` (tabele katalogu, bez `id`/FK) z nazwami `tabela.kolumna` w `verification.md` i wypisuje braki (0 braków) — 6e22585
 
 #### Manual
 
-- [x] 2.2 Człowiek porównał tabelę z PDF ChPL i zatwierdził ją (także każde zawężenie zakresu)
+- [x] 2.2 Człowiek porównał tabelę z PDF ChPL i zatwierdził ją (także każde zawężenie zakresu) — 6e22585
 
 ### Phase 3: Dane katalogu
 
 #### Automated
 
-- [ ] 3.1 Migracje stosują się czysto: `npx supabase db reset`
-- [ ] 3.2 Testy bazy przechodzą: `npx supabase test db`
-- [ ] 3.3 Lint przechodzi: `npm run lint`
+- [x] 3.1 Migracje stosują się czysto: `npx supabase db reset`
+- [x] 3.2 Testy bazy przechodzą: `npx supabase test db`
+- [x] 3.3 Lint przechodzi: `npm run lint`
 - [ ] 3.4 CI na pushu jest zielone (job `smoke` z krokiem testów bazy)
 
 #### Manual
 
-- [ ] 3.5 Losowo wybrane 3 wartości z bazy zgadzają się z zatwierdzonym `verification.md`
+- [x] 3.5 Losowo wybrane 3 wartości z bazy zgadzają się z zatwierdzonym `verification.md`
 
 ### Phase 4: Wdrożenie na produkcję
 
