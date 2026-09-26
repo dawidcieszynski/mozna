@@ -21,7 +21,7 @@ Zatwierdzony w Plan Mode 2026-09-25. Źródło prawdy dla „co jest już wdroż
 | Preview URLs | wyłączone (`preview_urls: false`) — ryzyko ekspozycji danych z rejestru |
 | Bindingi | `ASSETS`, `IMAGES` (bez KV — `session: false` w `astro.config.mjs`) |
 | Secrety Workera | `SUPABASE_URL`, `SUPABASE_KEY` (publishable key; nigdy `secret`/`service_role`) |
-| Supabase | hostowany projekt `mozna`, Central EU (Frankfurt); migracje: `20260925165142_household_and_children`, `20260925200500_household_hardening` (2026-09-25, `supabase db push` — człowiek) |
+| Supabase | hostowany projekt `mozna`, Central EU (Frankfurt); migracje: `20260925165142_household_and_children`, `20260925200500_household_hardening`, `20260925212010_medication_catalog`, `20260926073557_medication_catalog_seed` (`supabase db push` — człowiek) |
 | Auth Cloudflare | Account API Token z szablonu „Edit Cloudflare Workers”, jedno konto, w lokalnym `.env` (gitignored) |
 
 ## Zmiany w repo
@@ -59,6 +59,7 @@ Pełny smoke auth (`npm run smoke`, zakłada konto) **nie** jest uruchamiany na 
 | 2026-09-25 | 45f8c663 | pierwsze wdrożenie (szkielet auth) | — | read-only, patrz wyżej |
 | 2026-09-25 | 210b8ab6 | `household-with-child` (S-01): gospodarstwo, dzieci, RLS | `20260925165142_household_and_children` | anonim → `/auth/signin` na chronionych trasach; schemat prod: RLS na 3 tabelach, 5 polityk, 0 DELETE, UPDATE dzieci tylko waga; przepływ zalogowanego (gospodarstwo, syntetyczne dziecko, aktualizacja wagi) potwierdzony ręcznie przez człowieka |
 | 2026-09-25 | 259cf1b7 | poprawki z przeglądu `household-with-child` (F1 waga, F2/F3/F6 baza) | `20260925200500_household_hardening` | anonim → `/auth/signin`; schemat prod: trigger `household_members_delete_empty_household`, CHECK `children_weight_measured_after_birth`, anon bez grantów, authenticated: SELECT + INSERT kolumn danych + UPDATE wagi |
+| 2026-09-26 | 259cf1b7 (bez zmian) | `seed-medication-catalog` (F-01): katalog tylko do odczytu | `20260925212010_medication_catalog`, `20260926073557_medication_catalog_seed` | 4 migracje zdalnie; 5 tabel katalogu z RLS i SELECT tylko dla authenticated; anon przez REST → 401/42501; dane: 3 produkty, 12 pasm, 9 GTIN-ów zgodnie z `verification.md` (zrzut tylko tabel katalogu, usunięty) |
 
 Kolejność przy zmianach schematu: **najpierw `supabase db push` (człowiek), potem `wrangler deploy`** — middleware odpytuje tabele gospodarstwa przy każdym żądaniu zalogowanego użytkownika.
 

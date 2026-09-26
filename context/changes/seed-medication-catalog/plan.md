@@ -276,23 +276,23 @@ Dwie migracje addytywne (schemat, dane). Korekta wartości w przyszłości = now
 
 #### Automated
 
-- [x] 3.1 Migracje stosują się czysto: `npx supabase db reset`
-- [x] 3.2 Testy bazy przechodzą: `npx supabase test db`
-- [x] 3.3 Lint przechodzi: `npm run lint`
-- [ ] 3.4 CI na pushu jest zielone (job `smoke` z krokiem testów bazy)
+- [x] 3.1 Migracje stosują się czysto: `npx supabase db reset` — a3a8b42
+- [x] 3.2 Testy bazy przechodzą: `npx supabase test db` — a3a8b42
+- [x] 3.3 Lint przechodzi: `npm run lint` — a3a8b42
+- [x] 3.4 CI na pushu jest zielone (job `smoke` z krokiem testów bazy) — a3a8b42
 
 #### Manual
 
-- [x] 3.5 Losowo wybrane 3 wartości z bazy zgadzają się z zatwierdzonym `verification.md`
+- [x] 3.5 Losowo wybrane 3 wartości z bazy zgadzają się z zatwierdzonym `verification.md` — a3a8b42
 
 ### Phase 4: Wdrożenie na produkcję
 
 #### Automated
 
-- [ ] 4.1 `npx supabase migration list` pokazuje obie migracje katalogu jako zastosowane zdalnie
-- [ ] 4.2 Schemat produkcyjny (`npx supabase db dump --linked --schema public`) zawiera tabele katalogu z RLS i grantem SELECT tylko dla `authenticated`
-- [ ] 4.3 Anonim przez REST nie czyta katalogu (`GET /rest/v1/products` z kluczem publishable → brak dostępu)
+- [x] 4.1 `npx supabase migration list` pokazuje obie migracje katalogu jako zastosowane zdalnie
+- [x] 4.2 Schemat produkcyjny (`npx supabase db dump --linked --schema public`) zawiera tabele katalogu z RLS i grantem SELECT tylko dla `authenticated`
+- [x] 4.3 Anonim przez REST nie czyta katalogu (`GET /rest/v1/products` z kluczem publishable → brak dostępu)
 
 #### Manual
 
-- [ ] 4.4 W Supabase Dashboard liczba wierszy `products` i pasma w `product_dose_bands` są zgodne z `verification.md`
+- [x] 4.4 W Supabase Dashboard liczba wierszy `products` i pasma w `product_dose_bands` są zgodne z `verification.md`
