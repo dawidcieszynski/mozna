@@ -254,23 +254,23 @@ Dwie migracje addytywne (schemat, dane). Korekta wartości w przyszłości = now
 
 #### Automated
 
-- [x] 1.1 Migracje stosują się czysto: `npx supabase db reset`
-- [x] 1.2 Testy bazy przechodzą: `npx supabase test db`
-- [x] 1.3 Lint przechodzi: `npm run lint`
+- [x] 1.1 Migracje stosują się czysto: `npx supabase db reset` — 1c9883f
+- [x] 1.2 Testy bazy przechodzą: `npx supabase test db` — 1c9883f
+- [x] 1.3 Lint przechodzi: `npm run lint` — 1c9883f
 
 #### Manual
 
-- [x] 1.4 Schemat odpowiada kontraktowi (tabele, CHECK-i, polityki, granty) — przegląd `git diff` migracji
+- [x] 1.4 Schemat odpowiada kontraktowi (tabele, CHECK-i, polityki, granty) — przegląd `git diff` migracji — 1c9883f
 
 ### Phase 2: Weryfikacja wartości z ChPL
 
 #### Automated
 
-- [ ] 2.1 Każde pole danych z kontraktu fazy 1 ma wiersz w `verification.md`: skrypt Node w scratchpadzie porównuje kolumny z `information_schema.columns` (tabele katalogu, bez `id`/FK) z nazwami `tabela.kolumna` w `verification.md` i wypisuje braki (0 braków)
+- [x] 2.1 Każde pole danych z kontraktu fazy 1 ma wiersz w `verification.md`: skrypt Node w scratchpadzie porównuje kolumny z `information_schema.columns` (tabele katalogu, bez `id`/FK) z nazwami `tabela.kolumna` w `verification.md` i wypisuje braki (0 braków)
 
 #### Manual
 
-- [ ] 2.2 Człowiek porównał tabelę z PDF ChPL i zatwierdził ją (także każde zawężenie zakresu)
+- [x] 2.2 Człowiek porównał tabelę z PDF ChPL i zatwierdził ją (także każde zawężenie zakresu)
 
 ### Phase 3: Dane katalogu
 

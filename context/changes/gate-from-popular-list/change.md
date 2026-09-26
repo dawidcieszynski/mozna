@@ -33,3 +33,10 @@ From the S-01 implementation review (`context/changes/household-with-child/revie
   `as string`, Polish messages, no raw Supabase `error.message`, Polish page titles.
 - F8: the child view should render an error message on a Supabase read failure
   (like the dashboard) instead of a generic 500.
+
+From F-01 verification (`context/changes/seed-medication-catalog/verification.md`, D2, user 2026-09-26):
+- The product's upper weight bound is inclusive: a weight equal to
+  `products.max_weight_kg` (40.0 kg Forte, 42.0 kg Panadol) uses the last band /
+  the per-kg rule; only weight above it is blocked. Bands stay `[min, max)` in data.
+- Show `products.warnings` (ChPL 4.2 / 4.3 / 4.4 texts) next to the gate answer;
+  they never change allow/wait/block.
